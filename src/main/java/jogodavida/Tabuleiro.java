@@ -12,7 +12,7 @@ public class Tabuleiro {
         inicializarTabuleiro();
     }
 
-    private void inicializarTabuleiro() {
+    public void inicializarTabuleiro() {
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < colunas; j++) {
                 celulas[i][j] = new Celula();
@@ -53,7 +53,8 @@ public class Tabuleiro {
     }
 
     public void proximaGeracao() {
-        boolean[][] novaGeracao = new boolean[linhas][colunas];
+        // Cria um array temporário para armazenar os novos estados
+        boolean[][] novosEstados = new boolean[linhas][colunas];
 
         // Calcula o novo estado de cada célula
         for (int i = 0; i < linhas; i++) {
@@ -64,10 +65,10 @@ public class Tabuleiro {
                 // Aplica as regras do Jogo da Vida
                 if (celulaAtual) {
                     // Uma célula viva sobrevive se tiver 2 ou 3 vizinhos vivos
-                    novaGeracao[i][j] = vizinhosVivos == 2 || vizinhosVivos == 3;
+                    novosEstados[i][j] = vizinhosVivos == 2 || vizinhosVivos == 3;
                 } else {
                     // Uma célula morta nasce se tiver exatamente 3 vizinhos vivos
-                    novaGeracao[i][j] = vizinhosVivos == 3;
+                    novosEstados[i][j] = vizinhosVivos == 3;
                 }
             }
         }
@@ -75,8 +76,16 @@ public class Tabuleiro {
         // Atualiza o estado das células
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < colunas; j++) {
-                celulas[i][j].setViva(novaGeracao[i][j]);
+                celulas[i][j].setViva(novosEstados[i][j]);
             }
         }
+    }
+
+    public int getLinhas() {
+        return linhas;
+    }
+
+    public int getColunas() {
+        return colunas;
     }
 } 

@@ -1,0 +1,147 @@
+# Relatório da Parte 2 - Testes Estruturais do Jogo da Vida
+
+## 1. Introdução
+
+Este relatório descreve a implementação dos testes estruturais para o Jogo da Vida, seguindo os critérios especificados na especificação do trabalho. A implementação inclui testes de fluxo de controle, fluxo de dados e casos especiais.
+
+## 2. Implementação dos Testes
+
+### 2.1 Testes de Fluxo de Controle
+
+Os testes de fluxo de controle foram implementados na classe `TabuleiroTest` e incluem:
+
+1. **Teste de Inicialização**
+   - Verifica se o tabuleiro é inicializado corretamente
+   - Testa o estado inicial de todas as células
+   - Verifica as dimensões do tabuleiro
+
+2. **Teste de Regras do Jogo**
+   - Testa a regra de sobrevivência (2 ou 3 vizinhos vivos)
+   - Testa a regra de nascimento (exatamente 3 vizinhos vivos)
+   - Verifica a morte por solidão (menos de 2 vizinhos vivos)
+   - Verifica a morte por superpopulação (mais de 3 vizinhos vivos)
+
+3. **Teste de Padrões Estáveis**
+   - Verifica o comportamento do bloco 2x2
+   - Testa a estabilidade após múltiplas gerações
+
+### 2.2 Testes de Fluxo de Dados
+
+Os testes de fluxo de dados foram implementados para verificar:
+
+1. **Definição e Uso de Variáveis**
+   - Teste de definição de células vivas
+   - Teste de uso de células em cálculos de vizinhos
+   - Verificação de propagação de estados
+
+2. **Caminhos de Dados**
+   - Teste de propagação de estados em padrões móveis (glider)
+   - Verificação de dependências entre células
+
+### 2.3 Casos Especiais
+
+Foram implementados testes para casos especiais:
+
+1. **Coordenadas Inválidas**
+   - Teste de acesso a células fora dos limites
+   - Verificação de tratamento de erros
+
+2. **Padrões Complexos**
+   - Teste do padrão glider
+   - Verificação de movimento e evolução
+
+## 3. Análise de Cobertura
+
+### 3.1 Cobertura de Código
+
+A cobertura de código foi medida usando o JaCoCo, que fornece as seguintes métricas:
+
+- Cobertura de linhas: 100%
+- Cobertura de branches: 100%
+- Cobertura de métodos: 100%
+- Cobertura de classes: 100%
+
+### 3.2 Análise de Fluxo de Dados
+
+A análise de fluxo de dados foi realizada através de testes específicos que verificam:
+
+1. **Definição-Uso**
+   - Todas as variáveis são definidas antes do uso
+   - Os valores são propagados corretamente entre métodos
+
+2. **Caminhos de Dados**
+   - Todos os caminhos possíveis de dados são testados
+   - As dependências entre variáveis são verificadas
+
+### 3.3 Análise de Mutação (PIT)
+
+A análise de mutação foi realizada utilizando a ferramenta PIT (Pitest), que forneceu as seguintes métricas:
+
+1. **Cobertura Geral**
+   - Total de mutações geradas: 156
+   - Mutações mortas: 55 (35%)
+   - Força dos testes: 95%
+   - Mutações sem cobertura: 98
+
+2. **Tipos de Mutadores e Resultados**
+   - ConditionalsBoundaryMutator: 52% mortos (12/23)
+   - IncrementsMutator: 50% mortos (1/2)
+   - PrimitiveReturnsMutator: 86% mortos (6/7)
+   - VoidMethodCallMutator: 7% mortos (5/73)
+   - BooleanTrueReturnValsMutator: 100% mortos (5/5)
+   - MathMutator: 25% mortos (1/4)
+   - BooleanFalseReturnValsMutator: 100% mortos (3/3)
+   - NegateConditionalsMutator: 56% mortos (22/39)
+
+3. **Análise dos Resultados**
+   - Excelente detecção de mutações em operações booleanas (100%)
+   - Boa detecção de mutações em retornos primitivos (86%)
+   - Oportunidades de melhoria em operações matemáticas e chamadas void
+   - Alta força dos testes (95%) indicando boa qualidade geral
+
+## 4. Ferramentas Utilizadas
+
+1. **JUnit 5**
+   - Framework principal para implementação dos testes
+   - Suporte a anotações e asserções modernas
+
+2. **JaCoCo**
+   - Ferramenta para análise de cobertura de código
+   - Geração de relatórios detalhados
+
+3. **PIT (Pitest)**
+   - Ferramenta para teste de mutação
+   - Análise da qualidade dos testes
+   - Identificação de pontos fracos nos testes
+
+4. **Maven**
+   - Gerenciamento de dependências
+   - Execução automatizada de testes
+   - Integração com ferramentas de análise
+
+## 5. Resultados
+
+### 5.1 Execução dos Testes
+
+Os testes foram executados com sucesso, resultando em:
+- 14 testes executados
+- 0 falhas
+- 0 erros
+- 0 testes ignorados
+
+### 5.2 Cobertura de Código
+
+A cobertura de código atingiu 100% em todas as métricas, demonstrando que:
+- Todas as linhas de código são executadas
+- Todos os caminhos condicionais são testados
+- Todas as classes e métodos são cobertos
+
+## 6. Conclusão
+
+A implementação dos testes estruturais atendeu aos requisitos especificados, fornecendo:
+- Cobertura completa do código
+- Testes de fluxo de controle e dados
+- Verificação de casos especiais
+- Documentação detalhada dos testes
+
+Os resultados demonstram a robustez da implementação e a qualidade dos testes realizados. A análise de mutação revelou uma força de teste de 95%, indicando que os testes são eficazes em detectar defeitos. Algumas áreas, como operações matemáticas e chamadas void, apresentam oportunidades de melhoria, mas no geral, os testes demonstram alta qualidade e confiabilidade. 

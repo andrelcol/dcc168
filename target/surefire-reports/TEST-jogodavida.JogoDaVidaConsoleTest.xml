@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="jogodavida.TabuleiroTest" time="0.05" tests="9" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="jogodavida.JogoDaVidaConsoleTest" time="0" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -52,13 +52,9 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testFluxoDadosMorte" classname="jogodavida.TabuleiroTest" time="0.026"/>
-  <testcase name="testSetGetCelula" classname="jogodavida.TabuleiroTest" time="0.001"/>
-  <testcase name="testContaVizinhosVivos" classname="jogodavida.TabuleiroTest" time="0.002"/>
-  <testcase name="testProximaGeracao" classname="jogodavida.TabuleiroTest" time="0.001"/>
-  <testcase name="testPadraoEstavel" classname="jogodavida.TabuleiroTest" time="0"/>
-  <testcase name="testBordas" classname="jogodavida.TabuleiroTest" time="0.001"/>
-  <testcase name="testInicializacao" classname="jogodavida.TabuleiroTest" time="0"/>
-  <testcase name="testFluxoDadosNascimento" classname="jogodavida.TabuleiroTest" time="0.001"/>
-  <testcase name="testFluxoDadosSobrevivencia" classname="jogodavida.TabuleiroTest" time="0.001"/>
+  <testcase name="testCoordenadasInvalidas" classname="jogodavida.JogoDaVidaConsoleTest" time="0"/>
+  <testcase name="testSetGetCelula" classname="jogodavida.JogoDaVidaConsoleTest" time="0"/>
+  <testcase name="testProximaGeracao" classname="jogodavida.JogoDaVidaConsoleTest" time="0"/>
+  <testcase name="testGlider" classname="jogodavida.JogoDaVidaConsoleTest" time="0"/>
+  <testcase name="testInicializacao" classname="jogodavida.JogoDaVidaConsoleTest" time="0"/>
 </testsuite>
