@@ -15,77 +15,117 @@ public class TabuleiroTest {
     @Test
     void testInicializacao() {
         assertNotNull(tabuleiro);
+        // Verifica se todas as células começam mortas
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                assertFalse(tabuleiro.getCelula(i, j));
+            }
+        }
     }
 
     @Test
-    void testRegrasSobrevivencia() {
-        // Testa célula viva com 2 vizinhos (deve sobreviver)
-        tabuleiro.setCelula(1, 1, true);
-        tabuleiro.setCelula(1, 2, true);
-        tabuleiro.setCelula(1, 3, true);
-        
+    void testMortePorSolidao() {
+        // Célula com 0 vizinhos morre
+        tabuleiro.setCelula(2, 2, true);
         tabuleiro.proximaGeracao();
-        assertTrue(tabuleiro.getCelula(1, 2));
-        
-        // Testa célula morta com 3 vizinhos (deve nascer)
+        assertFalse(tabuleiro.getCelula(2, 2));
+
+        // Célula com 1 vizinho morre
         tabuleiro = new Tabuleiro(6, 6);
-        tabuleiro.setCelula(0, 0, true);
-        tabuleiro.setCelula(0, 1, true);
-        tabuleiro.setCelula(0, 2, true);
-        
+        tabuleiro.setCelula(2, 2, true);
+        tabuleiro.setCelula(2, 3, true);
         tabuleiro.proximaGeracao();
-        assertTrue(tabuleiro.getCelula(1, 1));
+        assertFalse(tabuleiro.getCelula(2, 2));
+        assertFalse(tabuleiro.getCelula(2, 3));
     }
 
     @Test
-    void testPosicoesEspeciais() {
-        // Testa células nas bordas
-        tabuleiro.setCelula(0, 0, true);
-        tabuleiro.setCelula(0, 1, true);
-        tabuleiro.setCelula(1, 0, true);
-        
+    void testSobrevivencia() {
+        // Célula com 2 vizinhos sobrevive
+        tabuleiro.setCelula(1, 2, true);
+        tabuleiro.setCelula(2, 2, true);
+        tabuleiro.setCelula(3, 2, true);
         tabuleiro.proximaGeracao();
-        assertTrue(tabuleiro.getCelula(0, 0));
-    }
+        assertTrue(tabuleiro.getCelula(2, 2));
 
-    @Test
-    void testContagemVizinhos() {
-        // Configura um padrão com 2 vizinhos vivos
+        // Célula com 3 vizinhos sobrevive
+        tabuleiro = new Tabuleiro(6, 6);
         tabuleiro.setCelula(1, 1, true);
-        tabuleiro.setCelula(1, 3, true);
-        
-        assertEquals(2, tabuleiro.contaVizinhosVivos(1, 2));
+        tabuleiro.setCelula(1, 2, true);
+        tabuleiro.setCelula(2, 1, true);
+        tabuleiro.setCelula(2, 2, true);
+        tabuleiro.proximaGeracao();
+        assertTrue(tabuleiro.getCelula(2, 2));
     }
 
     @Test
-    void testTransicoesMultiplas() {
-        // Configura um padrão que deve oscilar
+    void testMortePorSuperpopulacao() {
+        // Célula com 4 vizinhos morre
         tabuleiro.setCelula(1, 1, true);
         tabuleiro.setCelula(1, 2, true);
         tabuleiro.setCelula(1, 3, true);
-        
+        tabuleiro.setCelula(2, 2, true);
+        tabuleiro.setCelula(3, 2, true);
         tabuleiro.proximaGeracao();
-        assertTrue(tabuleiro.getCelula(1, 2));
-        
-        tabuleiro.proximaGeracao();
-        assertTrue(tabuleiro.getCelula(1, 1));
-        assertTrue(tabuleiro.getCelula(1, 2));
-        assertTrue(tabuleiro.getCelula(1, 3));
+        assertFalse(tabuleiro.getCelula(2, 2));
     }
 
     @Test
-    void testPadroesConhecidos() {
-        // Testa o padrão "blinker"
+    void testNascimento() {
+        // Célula morta com 3 vizinhos nasce
         tabuleiro.setCelula(1, 1, true);
         tabuleiro.setCelula(1, 2, true);
         tabuleiro.setCelula(1, 3, true);
-        
+        tabuleiro.proximaGeracao();
+        assertTrue(tabuleiro.getCelula(2, 2));
+    }
+
+    @Test
+    void testCoordenadasInvalidas() {
+        // Testa coordenadas negativas
+        assertFalse(tabuleiro.getCelula(-1, -1));
+        tabuleiro.setCelula(-1, -1, true);
+        assertFalse(tabuleiro.getCelula(-1, -1));
+
+        // Testa coordenadas fora dos limites
+        assertFalse(tabuleiro.getCelula(6, 6));
+        tabuleiro.setCelula(6, 6, true);
+        assertFalse(tabuleiro.getCelula(6, 6));
+    }
+
+    @Test
+    void testBlinker() {
+        // Configura o padrão blinker
+        tabuleiro.setCelula(2, 1, true);
+        tabuleiro.setCelula(2, 2, true);
+        tabuleiro.setCelula(2, 3, true);
+
+        // Primeira geração
         tabuleiro.proximaGeracao();
         assertTrue(tabuleiro.getCelula(1, 2));
-        
+        assertTrue(tabuleiro.getCelula(2, 2));
+        assertTrue(tabuleiro.getCelula(3, 2));
+
+        // Segunda geração (volta ao padrão original)
+        tabuleiro.proximaGeracao();
+        assertTrue(tabuleiro.getCelula(2, 1));
+        assertTrue(tabuleiro.getCelula(2, 2));
+        assertTrue(tabuleiro.getCelula(2, 3));
+    }
+
+    @Test
+    void testBloco() {
+        // Configura o padrão bloco 2x2
+        tabuleiro.setCelula(1, 1, true);
+        tabuleiro.setCelula(1, 2, true);
+        tabuleiro.setCelula(2, 1, true);
+        tabuleiro.setCelula(2, 2, true);
+
+        // O bloco deve permanecer estável
         tabuleiro.proximaGeracao();
         assertTrue(tabuleiro.getCelula(1, 1));
         assertTrue(tabuleiro.getCelula(1, 2));
-        assertTrue(tabuleiro.getCelula(1, 3));
+        assertTrue(tabuleiro.getCelula(2, 1));
+        assertTrue(tabuleiro.getCelula(2, 2));
     }
 } 
