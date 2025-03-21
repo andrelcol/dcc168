@@ -1,0 +1,107 @@
+# Relatório Parte 3 - Teste de Mutação
+
+## 1. Avaliação da Qualidade dos Casos de Teste
+
+A avaliação da qualidade dos casos de teste foi realizada utilizando o teste de mutação com a ferramenta PIT (Pitest). Os resultados obtidos foram:
+
+- Total de mutações geradas: 156
+- Mutações mortas: 55 (35%)
+- Força dos testes: 95%
+- Mutações sem cobertura: 98
+- Score de mutação: 35%
+- Cobertura de linhas: 33% (61/184 linhas)
+- Tempo total de execução: 3 segundos
+
+Os relatórios detalhados dos testes de mutação podem ser encontrados nos seguintes diretórios:
+- Relatório HTML: target/pit-reports/YYYYMMDDHHMI/index.html
+- Relatório XML: target/pit-reports/YYYYMMDDHHMI/mutations.xml
+onde YYYYMMDDHHMI representa a data e hora da execução do teste.
+
+## 2. Análise dos Mutantes Vivos
+
+A análise por operador de mutação revelou:
+
+a) ConditionalsBoundaryMutator:
+   - Geradas: 23
+   - Mortas: 12 (52%)
+   - Sem cobertura: 11
+
+b) IncrementsMutator:
+   - Geradas: 2
+   - Mortas: 1 (50%)
+   - Sem cobertura: 1
+
+c) PrimitiveReturnsMutator:
+   - Geradas: 7
+   - Mortas: 6 (86%)
+   - Sem cobertura: 1
+
+d) VoidMethodCallMutator:
+   - Geradas: 73
+   - Mortas: 5 (7%)
+   - Sobreviventes: 1
+   - Sem cobertura: 67
+
+e) BooleanTrueReturnValsMutator:
+   - Geradas: 5
+   - Mortas: 5 (100%)
+   - Sem cobertura: 0
+
+f) MathMutator:
+   - Geradas: 4
+   - Mortas: 1 (25%)
+   - Sobreviventes: 2
+   - Sem cobertura: 1
+
+g) BooleanFalseReturnValsMutator:
+   - Geradas: 3
+   - Mortas: 3 (100%)
+   - Sem cobertura: 0
+
+h) NegateConditionalsMutator:
+   - Geradas: 39
+   - Mortas: 22 (56%)
+   - Sem cobertura: 17
+
+## 3. Plano de Melhoria
+
+Com base nos resultados, identificamos as seguintes áreas prioritárias para melhoria:
+
+a) Operações matemáticas (MathMutator):
+   - Apenas 25% das mutações foram detectadas
+   - Necessário criar testes específicos para operações matemáticas
+   - Foco em mutações sobreviventes na classe Tabuleiro
+
+b) Chamadas de métodos void (VoidMethodCallMutator):
+   - Apenas 7% das mutações foram detectadas
+   - Alta quantidade de código sem cobertura (67 mutações)
+   - Necessário aumentar cobertura de código
+
+c) Condicionais (NegateConditionalsMutator):
+   - 56% das mutações foram detectadas
+   - 17 mutações sem cobertura
+   - Melhorar testes de fluxo de controle
+
+## 4. Conclusão
+
+O teste de mutação revelou que, embora os testes existentes sejam eficazes quando executados (força de teste de 95%), a cobertura geral do código é baixa (33%), resultando em um score de mutação de apenas 35%. Isso indica que muitas partes do código não estão sendo testadas adequadamente.
+
+As principais áreas que necessitam de atenção são:
+1. Operações matemáticas (75% das mutações não detectadas)
+2. Chamadas de métodos void (93% das mutações não detectadas)
+3. Condicionais (44% das mutações não detectadas)
+
+Recomenda-se a criação de novos casos de teste focando nestas áreas específicas para melhorar a qualidade geral da suite de testes.
+
+## 5. Conteúdo da Entrega
+
+O arquivo ZIP contém os seguintes itens:
+1. Código fonte do projeto (diretório src/)
+   - Código fonte principal em src/main/java/jogodavida/
+   - Código dos testes em src/test/java/jogodavida/
+2. Arquivo pom.xml com as configurações do Maven e dependências
+3. Este relatório (relatorio_parte3.txt)
+4. Relatórios gerados pelo PIT
+   - Relatório HTML em target/pit-reports/
+   - Relatório XML em target/pit-reports/
+5. Arquivos de configuração e build do projeto 

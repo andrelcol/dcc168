@@ -1,0 +1,173 @@
+# Relatório - Parte 1: Implementação do Jogo da Vida
+
+## 1. Visão Geral
+A implementação do Jogo da Vida foi desenvolvida em Java, utilizando uma arquitetura orientada a objetos com duas classes principais: `Celula` e `Tabuleiro`. O projeto foi estruturado utilizando Maven para gerenciamento de dependências e JUnit para testes.
+
+## 2. Estrutura do Projeto
+src/
+├── main/java/jogodavida/
+│   ├── Celula.java
+│   └── Tabuleiro.java
+└── test/java/jogodavida/
+    └── TabuleiroTest.java
+
+## 3. Implementação das Classes
+
+### 3.1 Classe Celula
+public class Celula {
+    private boolean viva;
+    
+    public Celula() {
+        this.viva = false;
+    }
+    
+    public boolean isViva() {
+        return viva;
+    }
+    
+    public void setViva(boolean viva) {
+        this.viva = viva;
+    }
+}
+
+- Responsabilidade: Representa uma única célula do tabuleiro
+- Atributos:
+  - viva: boolean que indica o estado da célula
+- Métodos:
+  - Construtor: inicializa a célula como morta
+  - isViva(): retorna o estado atual da célula
+  - setViva(): modifica o estado da célula
+
+### 3.2 Classe Tabuleiro
+public class Tabuleiro {
+    private Celula[][] celulas;
+    private int linhas;
+    private int colunas;
+    
+    // Métodos principais
+    public Tabuleiro(int linhas, int colunas)
+    public void setCelula(int x, int y, boolean estado)
+    public boolean getCelula(int x, int y)
+    public int contaVizinhosVivos(int x, int y)
+    public void proximaGeracao()
+}
+
+- Responsabilidade: Gerencia o tabuleiro e aplica as regras do jogo
+- Atributos:
+  - celulas: matriz de células
+  - linhas: número de linhas do tabuleiro
+  - colunas: número de colunas do tabuleiro
+- Métodos Principais:
+  - Construtor: inicializa o tabuleiro com dimensões especificadas
+  - setCelula(): define o estado de uma célula específica
+  - getCelula(): obtém o estado de uma célula específica
+  - contaVizinhosVivos(): calcula o número de vizinhos vivos
+  - proximaGeracao(): aplica as regras do jogo para gerar a próxima geração
+
+## 4. Critérios de Teste Funcional
+
+### 4.1 Particionamento em Classes de Equivalência
+
+#### Classes de Equivalência Válidas:
+1. Estado da Célula:
+   - Célula Viva
+   - Célula Morta
+
+2. Número de Vizinhos Vivos:
+   - 0-1 vizinhos: morte por solidão
+   - 2-3 vizinhos: sobrevivência
+   - >3 vizinhos: morte por superpopulação
+   - Exatamente 3 vizinhos para célula morta: nascimento
+
+3. Posição da Célula:
+   - Coordenadas dentro dos limites do tabuleiro
+
+#### Classes de Equivalência Inválidas:
+1. Coordenadas:
+   - Coordenadas negativas
+   - Coordenadas além dos limites do tabuleiro
+
+### 4.2 Análise do Valor Limite
+
+1. Limites para Sobrevivência:
+   - Mínimo: 2 vizinhos (limite inferior para sobrevivência)
+   - Máximo: 3 vizinhos (limite superior para sobrevivência)
+
+2. Limites para Morte:
+   - 0-1 vizinhos: morte por solidão
+   - 4-8 vizinhos: morte por superpopulação
+
+3. Limites para Nascimento:
+   - Exatamente 3 vizinhos
+
+### 4.3 Grafo de Causa-Efeito
+
+#### Causas:
+1. Estado Atual:
+   - C1: Célula está viva
+   - C2: Célula está morta
+
+2. Número de Vizinhos:
+   - V0: 0 vizinhos
+   - V1: 1 vizinho
+   - V2: 2 vizinhos
+   - V3: 3 vizinhos
+   - V4+: 4 ou mais vizinhos
+
+#### Efeitos:
+1. E1: Célula morre por solidão (C1 AND (V0 OR V1))
+2. E2: Célula sobrevive (C1 AND (V2 OR V3))
+3. E3: Célula morre por superpopulação (C1 AND V4+)
+4. E4: Célula nasce (C2 AND V3)
+5. E5: Célula permanece morta (C2 AND (V0 OR V1 OR V2 OR V4+))
+
+## 5. Casos de Teste Implementados
+
+### 5.1 Testes de Regras Básicas
+1. `testMortePorSolidao`:
+   - Célula com 0 vizinhos morre
+   - Célula com 1 vizinho morre
+
+2. `testSobrevivencia`:
+   - Célula com 2 vizinhos sobrevive
+   - Célula com 3 vizinhos sobrevive
+
+3. `testMortePorSuperpopulacao`:
+   - Célula com 4 ou mais vizinhos morre
+
+4. `testNascimento`:
+   - Célula morta com 3 vizinhos nasce
+
+### 5.2 Testes de Validação
+1. `testInicializacao`:
+   - Verifica se o tabuleiro é criado corretamente
+   - Verifica se todas as células começam mortas
+
+2. `testCoordenadasInvalidas`:
+   - Testa coordenadas negativas
+   - Testa coordenadas fora dos limites
+
+### 5.3 Testes de Padrões
+1. `testBloco`:
+   - Verifica o comportamento do padrão estático 2x2
+
+2. `testBlinker`:
+   - Verifica o comportamento do padrão oscilante
+
+## 6. Resultados dos Testes
+Todos os testes foram executados com sucesso, demonstrando que:
+- A inicialização do tabuleiro funciona corretamente
+- As regras do jogo são aplicadas adequadamente
+- O tratamento de coordenadas inválidas está funcionando
+- Os padrões conhecidos do jogo se comportam como esperado
+
+## 7. Conclusão
+A implementação da Parte 1 do Jogo da Vida foi concluída com sucesso, atendendo a todos os requisitos especificados:
+- Estrutura de dados adequada para representar o tabuleiro
+- Implementação correta das regras do jogo
+- Tratamento adequado de casos especiais
+- Testes abrangentes que cobrem os principais cenários
+- Aplicação sistemática dos critérios de teste funcional
+- Código organizado e bem documentado
+
+A implementação está pronta para ser utilizada como base para as próximas partes do projeto. 

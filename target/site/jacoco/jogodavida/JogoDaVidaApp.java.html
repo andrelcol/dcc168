@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JogoDaVidaApp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jogo-da-vida</a> &gt; <a href="index.source.html" class="el_package">jogodavida</a> &gt; <span class="el_source">JogoDaVidaApp.java</span></div><h1>JogoDaVidaApp.java</h1><pre class="source lang-java linenums">package jogodavida;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
+
+<span class="nc" id="L18">public class JogoDaVidaApp extends Application {</span>
+    private Tabuleiro tabuleiro;
+    private Button[][] celulas;
+    private Timeline timeline;
+    private Button btnIniciar;
+    private Button btnParar;
+    private Label lblStatus;
+    private Label lblGeracao;
+    private Slider sliderVelocidade;
+    private int geracao;
+    private static final int TAMANHO_CELULA = 30;
+    private static final int LINHAS = 20;
+    private static final int COLUNAS = 20;
+
+    @Override
+    public void start(Stage primaryStage) {
+<span class="nc" id="L34">        tabuleiro = new Tabuleiro(LINHAS, COLUNAS);</span>
+<span class="nc" id="L35">        celulas = new Button[LINHAS][COLUNAS];</span>
+<span class="nc" id="L36">        geracao = 0;</span>
+
+        // Layout principal
+<span class="nc" id="L39">        VBox root = new VBox(10);</span>
+<span class="nc" id="L40">        root.setPadding(new Insets(10));</span>
+
+        // Grid do jogo
+<span class="nc" id="L43">        GridPane grid = new GridPane();</span>
+<span class="nc" id="L44">        grid.setHgap(1);</span>
+<span class="nc" id="L45">        grid.setVgap(1);</span>
+<span class="nc" id="L46">        grid.setStyle(&quot;-fx-background-color: lightgray;&quot;);</span>
+
+        // Criação dos botões/células
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        for (int i = 0; i &lt; LINHAS; i++) {</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            for (int j = 0; j &lt; COLUNAS; j++) {</span>
+<span class="nc" id="L51">                Button celula = new Button();</span>
+<span class="nc" id="L52">                celula.setPrefSize(TAMANHO_CELULA, TAMANHO_CELULA);</span>
+<span class="nc" id="L53">                celula.setStyle(&quot;-fx-background-color: white; -fx-border-color: gray;&quot;);</span>
+                
+<span class="nc" id="L55">                final int linha = i;</span>
+<span class="nc" id="L56">                final int coluna = j;</span>
+<span class="nc" id="L57">                celula.setOnAction(e -&gt; toggleCelula(linha, coluna));</span>
+                
+                // Adiciona tooltip
+<span class="nc" id="L60">                celula.setTooltip(new Tooltip(&quot;Clique para alternar estado da célula&quot;));</span>
+                
+<span class="nc" id="L62">                celulas[i][j] = celula;</span>
+<span class="nc" id="L63">                grid.add(celula, j, i);</span>
+            }
+        }
+
+        // Controle de velocidade
+<span class="nc" id="L68">        sliderVelocidade = new Slider(100, 1000, 500);</span>
+<span class="nc" id="L69">        sliderVelocidade.setShowTickLabels(true);</span>
+<span class="nc" id="L70">        sliderVelocidade.setShowTickMarks(true);</span>
+<span class="nc" id="L71">        sliderVelocidade.setMajorTickUnit(200);</span>
+<span class="nc" id="L72">        sliderVelocidade.setBlockIncrement(100);</span>
+        
+<span class="nc" id="L74">        Label lblVelocidade = new Label(&quot;Velocidade:&quot;);</span>
+<span class="nc" id="L75">        HBox velocidadeBox = new HBox(10);</span>
+<span class="nc" id="L76">        velocidadeBox.getChildren().addAll(lblVelocidade, sliderVelocidade);</span>
+
+        // Botões de controle
+<span class="nc" id="L79">        btnIniciar = new Button(&quot;Iniciar&quot;);</span>
+<span class="nc" id="L80">        btnParar = new Button(&quot;Parar&quot;);</span>
+<span class="nc" id="L81">        Button btnLimpar = new Button(&quot;Limpar&quot;);</span>
+        
+        // Labels de status
+<span class="nc" id="L84">        lblStatus = new Label(&quot;Células vivas: 0&quot;);</span>
+<span class="nc" id="L85">        lblGeracao = new Label(&quot;Geração: 0&quot;);</span>
+        
+        // Configuração da animação
+<span class="nc" id="L88">        timeline = new Timeline(new KeyFrame(Duration.millis(500), e -&gt; proximaGeracao()));</span>
+<span class="nc" id="L89">        timeline.setCycleCount(Timeline.INDEFINITE);</span>
+
+        // Atualiza a velocidade quando o slider muda
+<span class="nc" id="L92">        sliderVelocidade.valueProperty().addListener((obs, oldVal, newVal) -&gt; {</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (timeline != null) {</span>
+<span class="nc" id="L94">                timeline.stop();</span>
+<span class="nc" id="L95">                timeline = new Timeline(new KeyFrame(Duration.millis(newVal.doubleValue()), e -&gt; proximaGeracao()));</span>
+<span class="nc" id="L96">                timeline.setCycleCount(Timeline.INDEFINITE);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                if (btnParar.isDisabled()) {</span>
+<span class="nc" id="L98">                    timeline.play();</span>
+                }
+            }
+<span class="nc" id="L101">        });</span>
+
+        // Ações dos botões
+<span class="nc" id="L104">        btnIniciar.setOnAction(e -&gt; iniciarSimulacao());</span>
+<span class="nc" id="L105">        btnParar.setOnAction(e -&gt; pararSimulacao());</span>
+<span class="nc" id="L106">        btnLimpar.setOnAction(e -&gt; limparTabuleiro());</span>
+
+        // Adiciona tooltips aos botões
+<span class="nc" id="L109">        btnIniciar.setTooltip(new Tooltip(&quot;Inicia a simulação&quot;));</span>
+<span class="nc" id="L110">        btnParar.setTooltip(new Tooltip(&quot;Pausa a simulação&quot;));</span>
+<span class="nc" id="L111">        btnLimpar.setTooltip(new Tooltip(&quot;Limpa o tabuleiro&quot;));</span>
+
+        // Desabilita o botão Parar inicialmente
+<span class="nc" id="L114">        btnParar.setDisable(true);</span>
+
+        // Barra de controles
+<span class="nc" id="L117">        HBox controles = new HBox(10);</span>
+<span class="nc" id="L118">        controles.getChildren().addAll(btnIniciar, btnParar, btnLimpar, lblStatus, lblGeracao);</span>
+
+        // Montagem do layout
+<span class="nc" id="L121">        root.getChildren().addAll(grid, velocidadeBox, controles);</span>
+
+        // Configuração da janela
+<span class="nc" id="L124">        Scene scene = new Scene(root);</span>
+<span class="nc" id="L125">        primaryStage.setTitle(&quot;Jogo da Vida&quot;);</span>
+<span class="nc" id="L126">        primaryStage.setScene(scene);</span>
+<span class="nc" id="L127">        primaryStage.show();</span>
+        
+        // Atualiza o status inicial
+<span class="nc" id="L130">        atualizarStatus();</span>
+<span class="nc" id="L131">    }</span>
+
+    private void iniciarSimulacao() {
+<span class="nc" id="L134">        timeline.play();</span>
+<span class="nc" id="L135">        btnIniciar.setDisable(true);</span>
+<span class="nc" id="L136">        btnParar.setDisable(false);</span>
+<span class="nc" id="L137">    }</span>
+
+    private void pararSimulacao() {
+<span class="nc" id="L140">        timeline.pause();</span>
+<span class="nc" id="L141">        btnIniciar.setDisable(false);</span>
+<span class="nc" id="L142">        btnParar.setDisable(true);</span>
+<span class="nc" id="L143">    }</span>
+
+    private void toggleCelula(int linha, int coluna) {
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        boolean novoEstado = !tabuleiro.getCelula(linha, coluna);</span>
+<span class="nc" id="L147">        tabuleiro.setCelula(linha, coluna, novoEstado);</span>
+<span class="nc" id="L148">        atualizarCelula(linha, coluna);</span>
+<span class="nc" id="L149">        atualizarStatus();</span>
+<span class="nc" id="L150">    }</span>
+
+    private void atualizarCelula(int linha, int coluna) {
+<span class="nc" id="L153">        boolean viva = tabuleiro.getCelula(linha, coluna);</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        celulas[linha][coluna].setStyle(viva ? </span>
+<span class="nc" id="L155">            &quot;-fx-background-color: black; -fx-border-color: gray;&quot; :</span>
+<span class="nc" id="L156">            &quot;-fx-background-color: white; -fx-border-color: gray;&quot;);</span>
+<span class="nc" id="L157">    }</span>
+
+    private void proximaGeracao() {
+<span class="nc" id="L160">        tabuleiro.proximaGeracao();</span>
+<span class="nc" id="L161">        geracao++;</span>
+        
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        for (int i = 0; i &lt; LINHAS; i++) {</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            for (int j = 0; j &lt; COLUNAS; j++) {</span>
+<span class="nc" id="L165">                atualizarCelula(i, j);</span>
+            }
+        }
+<span class="nc" id="L168">        atualizarStatus();</span>
+<span class="nc" id="L169">    }</span>
+
+    private int contarCelulasVivas() {
+<span class="nc" id="L172">        int count = 0;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        for (int i = 0; i &lt; LINHAS; i++) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            for (int j = 0; j &lt; COLUNAS; j++) {</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                if (tabuleiro.getCelula(i, j)) {</span>
+<span class="nc" id="L176">                    count++;</span>
+                }
+            }
+        }
+<span class="nc" id="L180">        return count;</span>
+    }
+
+    private void atualizarStatus() {
+<span class="nc" id="L184">        int vivas = contarCelulasVivas();</span>
+<span class="nc" id="L185">        lblStatus.setText(&quot;Células vivas: &quot; + vivas);</span>
+<span class="nc" id="L186">        lblGeracao.setText(&quot;Geração: &quot; + geracao);</span>
+<span class="nc" id="L187">    }</span>
+
+    private void limparTabuleiro() {
+<span class="nc" id="L190">        pararSimulacao();</span>
+<span class="nc" id="L191">        geracao = 0;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        for (int i = 0; i &lt; LINHAS; i++) {</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            for (int j = 0; j &lt; COLUNAS; j++) {</span>
+<span class="nc" id="L194">                tabuleiro.setCelula(i, j, false);</span>
+<span class="nc" id="L195">                atualizarCelula(i, j);</span>
+            }
+        }
+<span class="nc" id="L198">        atualizarStatus();</span>
+<span class="nc" id="L199">    }</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L202">        launch(args);</span>
+<span class="nc" id="L203">    }</span>
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

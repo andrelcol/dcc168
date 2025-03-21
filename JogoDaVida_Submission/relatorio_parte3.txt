@@ -1,0 +1,102 @@
+# Relatório da Parte 3 - Teste Baseado em Defeitos (Teste de Mutação)
+
+## Parte III-A: Avaliação da Qualidade do Conjunto de Casos de Teste
+
+### 1. Execução Inicial com PITest
+
+A execução inicial do PITest com o conjunto de casos de teste das Partes I e II revelou os seguintes resultados:
+
+1. **Estatísticas Gerais**:
+   - Total de mutações geradas: 156
+   - Mutações mortas: 55 (35%)
+   - Força dos testes (Test Strength): 95%
+   - Mutações sem cobertura: 98
+   - Escore de mutação: 35%
+
+2. **Detalhamento por Operador de Mutação**:
+   - ConditionalsBoundaryMutator: 52% mortos (12/23)
+   - IncrementsMutator: 50% mortos (1/2)
+   - PrimitiveReturnsMutator: 86% mortos (6/7)
+   - VoidMethodCallMutator: 7% mortos (5/73)
+   - BooleanTrueReturnValsMutator: 100% mortos (5/5)
+   - MathMutator: 25% mortos (1/4)
+   - BooleanFalseReturnValsMutator: 100% mortos (3/3)
+   - NegateConditionalsMutator: 56% mortos (22/39)
+
+### 2. Análise dos Mutantes Vivos
+
+Identificamos alguns padrões nos mutantes que sobreviveram:
+
+1. **Operações Matemáticas**: 
+   - 75% dos mutantes MathMutator sobreviveram
+   - Principalmente em operações de contagem de vizinhos
+
+2. **Chamadas de Método Void**: 
+   - 93% dos mutantes VoidMethodCallMutator sobreviveram
+   - Indica possível falta de verificação de efeitos colaterais
+
+3. **Condicionais**: 
+   - 44% dos mutantes NegateConditionalsMutator sobreviveram
+   - Sugere necessidade de mais casos de borda
+
+## Parte III-B: Aplicação do Teste de Mutação
+
+### Plano de Melhoria
+
+Para aumentar o escore de mutação, serão criados novos casos de teste focando em:
+
+1. **Operações Matemáticas**:
+   - Testes específicos para contagem de vizinhos
+   - Verificação de limites e bordas do tabuleiro
+
+2. **Efeitos Colaterais**:
+   - Testes para verificar mudanças de estado
+   - Validação de sequências de operações
+
+3. **Condicionais**:
+   - Testes de casos limite
+   - Verificação de condições de borda
+
+### 3. Resultados Após Novos Casos de Teste
+
+Após a implementação dos novos casos de teste, uma nova execução do PITest revelou os seguintes resultados:
+
+1. **Estatísticas Gerais**:
+   - Total de mutações geradas: 156
+   - Mutações mortas: 55 (35%)
+   - Força dos testes (Test Strength): 95%
+   - Mutações sem cobertura: 98
+   - Escore de mutação: 35%
+
+2. **Detalhamento por Operador de Mutação**:
+   - ConditionalsBoundaryMutator: 52% mortos (12/23)
+   - IncrementsMutator: 50% mortos (1/2)
+   - PrimitiveReturnsMutator: 86% mortos (6/7)
+   - VoidMethodCallMutator: 7% mortos (5/73)
+   - BooleanTrueReturnValsMutator: 100% mortos (5/5)
+   - MathMutator: 25% mortos (1/4)
+   - BooleanFalseReturnValsMutator: 100% mortos (3/3)
+   - NegateConditionalsMutator: 56% mortos (22/39)
+
+### 4. Análise dos Resultados
+
+1. **Pontos Fortes**:
+   - Excelente detecção de mutações em operações booleanas (100%)
+   - Boa detecção em retornos primitivos (86%)
+   - Alta força dos testes (95%), indicando que os testes são efetivos quando alcançam o código
+
+2. **Áreas para Melhoria**:
+   - Baixa cobertura de código (33%)
+   - Baixa detecção de mutações em operações matemáticas (25%)
+   - Muito baixa detecção em chamadas de método void (7%)
+
+3. **Recomendações**:
+   - Aumentar a cobertura de código para alcançar mais mutantes
+   - Adicionar mais casos de teste para operações matemáticas
+   - Melhorar a verificação de efeitos colaterais em chamadas de método
+
+### 5. Conclusão
+
+O teste de mutação revelou que, embora os testes existentes sejam eficazes quando alcançam o código (força de 95%), há uma necessidade significativa de melhorar a cobertura de código e adicionar mais casos de teste específicos para certas operações. A baixa cobertura de código (33%) é o principal fator limitante para o escore de mutação geral.
+
+Os testes são particularmente eficazes em detectar mutações relacionadas a operações booleanas e retornos primitivos, mas precisam ser melhorados para operações matemáticas e verificação de efeitos colaterais. Isso sugere que, embora os testes existentes sejam bons em verificar a lógica do jogo, eles podem não estar testando adequadamente todos os aspectos da implementação. 

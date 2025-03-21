@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tabuleiro.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jogo-da-vida</a> &gt; <a href="index.source.html" class="el_package">jogodavida</a> &gt; <span class="el_source">Tabuleiro.java</span></div><h1>Tabuleiro.java</h1><pre class="source lang-java linenums">package jogodavida;
+
+public class Tabuleiro {
+    private Celula[][] celulas;
+    private int linhas;
+    private int colunas;
+
+<span class="fc" id="L8">    public Tabuleiro(int linhas, int colunas) {</span>
+<span class="fc" id="L9">        this.linhas = linhas;</span>
+<span class="fc" id="L10">        this.colunas = colunas;</span>
+<span class="fc" id="L11">        this.celulas = new Celula[linhas][colunas];</span>
+<span class="fc" id="L12">        inicializarTabuleiro();</span>
+<span class="fc" id="L13">    }</span>
+
+    public void inicializarTabuleiro() {
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        for (int i = 0; i &lt; linhas; i++) {</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">            for (int j = 0; j &lt; colunas; j++) {</span>
+<span class="fc" id="L18">                celulas[i][j] = new Celula();</span>
+            }
+        }
+<span class="fc" id="L21">    }</span>
+
+    public void setCelula(int x, int y, boolean estado) {
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (coordenadaValida(x, y)) {</span>
+<span class="fc" id="L25">            celulas[x][y].setViva(estado);</span>
+        }
+<span class="fc" id="L27">    }</span>
+
+    public boolean getCelula(int x, int y) {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (coordenadaValida(x, y)) {</span>
+<span class="fc" id="L31">            return celulas[x][y].isViva();</span>
+        }
+<span class="fc" id="L33">        return false;</span>
+    }
+
+    private boolean coordenadaValida(int x, int y) {
+<span class="fc bfc" id="L37" title="All 8 branches covered.">        return x &gt;= 0 &amp;&amp; x &lt; linhas &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; colunas;</span>
+    }
+
+    public int contaVizinhosVivos(int x, int y) {
+<span class="fc" id="L41">        int contador = 0;</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for (int i = -1; i &lt;= 1; i++) {</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            for (int j = -1; j &lt;= 1; j++) {</span>
+<span class="fc bfc" id="L44" title="All 4 branches covered.">                if (i == 0 &amp;&amp; j == 0) continue;</span>
+<span class="fc" id="L45">                int novoX = x + i;</span>
+<span class="fc" id="L46">                int novoY = y + j;</span>
+<span class="fc bfc" id="L47" title="All 4 branches covered.">                if (coordenadaValida(novoX, novoY) &amp;&amp; celulas[novoX][novoY].isViva()) {</span>
+<span class="fc" id="L48">                    contador++;</span>
+                }
+            }
+        }
+<span class="fc" id="L52">        return contador;</span>
+    }
+
+    public void proximaGeracao() {
+        // Cria um array temporário para armazenar os novos estados
+<span class="fc" id="L57">        boolean[][] novosEstados = new boolean[linhas][colunas];</span>
+
+        // Calcula o novo estado de cada célula
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (int i = 0; i &lt; linhas; i++) {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            for (int j = 0; j &lt; colunas; j++) {</span>
+<span class="fc" id="L62">                int vizinhosVivos = contaVizinhosVivos(i, j);</span>
+<span class="fc" id="L63">                boolean celulaAtual = celulas[i][j].isViva();</span>
+
+                // Aplica as regras do Jogo da Vida
+<span class="fc bfc" id="L66" title="All 2 branches covered.">                if (celulaAtual) {</span>
+                    // Uma célula viva sobrevive se tiver 2 ou 3 vizinhos vivos
+<span class="fc bfc" id="L68" title="All 4 branches covered.">                    novosEstados[i][j] = vizinhosVivos == 2 || vizinhosVivos == 3;</span>
+                } else {
+                    // Uma célula morta nasce se tiver exatamente 3 vizinhos vivos
+<span class="fc bfc" id="L71" title="All 2 branches covered.">                    novosEstados[i][j] = vizinhosVivos == 3;</span>
+                }
+            }
+        }
+
+        // Atualiza o estado das células
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (int i = 0; i &lt; linhas; i++) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            for (int j = 0; j &lt; colunas; j++) {</span>
+<span class="fc" id="L79">                celulas[i][j].setViva(novosEstados[i][j]);</span>
+            }
+        }
+<span class="fc" id="L82">    }</span>
+
+    public int getLinhas() {
+<span class="fc" id="L85">        return linhas;</span>
+    }
+
+    public int getColunas() {
+<span class="fc" id="L89">        return colunas;</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
