@@ -121,45 +121,6 @@ public class Tabuleiro {
 4. E4: Célula nasce (C2 AND V3)
 5. E5: Célula permanece morta (C2 AND (V0 OR V1 OR V2 OR V4+))
 
-#### Representação do Grafo:
-```
-C1 ──┬─── AND ─── V0/V1 ─── E1 (Morte por solidão)
-     ├─── AND ─── V2/V3 ─── E2 (Sobrevivência)
-     └─── AND ─── V4+   ─── E3 (Morte por superpopulação)
-
-C2 ──┬─── AND ─── V3    ─── E4 (Nascimento)
-     └─── AND ─── V0/V1/V2/V4+ ─── E5 (Permanece morta)
-```
-
-### 4.4 Tabela de Decisão
-
-| Condições e Ações           | R1 | R2 | R3 | R4 | R5 |
-|----------------------------|----|----|----|----|----| 
-| C1: Célula Viva           | S  | S  | S  | N  | N  |
-| C2: Célula Morta          | N  | N  | N  | S  | S  |
-| V0-V1: 0-1 vizinhos       | S  | N  | N  | N  | S  |
-| V2-V3: 2-3 vizinhos       | N  | S  | N  | S  | N  |
-| V4+: 4+ vizinhos          | N  | N  | S  | N  | S  |
-|----------------------------|----|----|----|----|----| 
-| A1: Morte                 | S  | N  | S  | N  | N  |
-| A2: Sobrevivência         | N  | S  | N  | N  | N  |
-| A3: Nascimento            | N  | N  | N  | S  | N  |
-| A4: Permanece Morta       | N  | N  | N  | N  | S  |
-
-Legenda: S = Sim, N = Não
-
-### 4.5 Rastreabilidade dos Casos de Teste
-
-| Classe de Equivalência                  | Caso de Teste                | Valor Limite |
-|----------------------------------------|-----------------------------|--------------| 
-| CE1: Célula viva com 0-1 vizinhos      | testMortePorSolidao        | 0, 1        |
-| CE2: Célula viva com 2-3 vizinhos      | testSobrevivencia          | 2, 3        |
-| CE3: Célula viva com 4+ vizinhos       | testMortePorSuperpopulacao | 4, 8        |
-| CE4: Célula morta com 3 vizinhos       | testNascimento             | 3           |
-| CE5: Célula morta com != 3 vizinhos    | testPermanenciaMorta       | 0,1,2,4     |
-| CE6: Coordenadas válidas               | testInicializacao          | 0, max-1    |
-| CE7: Coordenadas inválidas             | testCoordenadasInvalidas   | -1, max+1   |
-
 ## 5. Casos de Teste Implementados
 
 ### 5.1 Testes de Regras Básicas

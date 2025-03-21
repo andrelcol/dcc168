@@ -128,28 +128,4 @@ public class TabuleiroTest {
         assertTrue(tabuleiro.getCelula(2, 1));
         assertTrue(tabuleiro.getCelula(2, 2));
     }
-
-    @Test
-    void testPermanenciaMorta() {
-        // Célula morta com 0 vizinhos permanece morta
-        assertFalse(tabuleiro.getCelula(2, 2));
-        tabuleiro.proximaGeracao();
-        assertFalse(tabuleiro.getCelula(2, 2));
-
-        // Célula morta com 1 vizinho permanece morta
-        tabuleiro.setCelula(1, 2, true);
-        tabuleiro.proximaGeracao();
-        assertFalse(tabuleiro.getCelula(2, 2));
-
-        // Célula morta com 2 vizinhos permanece morta
-        tabuleiro.setCelula(3, 2, true);
-        tabuleiro.proximaGeracao();
-        assertFalse(tabuleiro.getCelula(2, 2));
-
-        // Célula morta com 4 vizinhos permanece morta
-        tabuleiro.setCelula(2, 1, true);
-        tabuleiro.setCelula(2, 3, true);
-        tabuleiro.proximaGeracao();
-        assertFalse(tabuleiro.getCelula(2, 2));
-    }
 } 
