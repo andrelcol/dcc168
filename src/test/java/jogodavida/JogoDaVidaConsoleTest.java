@@ -3,6 +3,7 @@ package jogodavida;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import jogodavida.JogoDaVidaConsole;
 
 class JogoDaVidaConsoleTest {
     private JogoDaVidaConsole jogo;
