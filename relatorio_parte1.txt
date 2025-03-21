@@ -1,0 +1,114 @@
+# Relatório - Parte 1: Implementação do Jogo da Vida
+
+## 1. Visão Geral
+A implementação do Jogo da Vida foi desenvolvida em Java, utilizando uma arquitetura orientada a objetos com duas classes principais: `Celula` e `Tabuleiro`. O projeto foi estruturado utilizando Maven para gerenciamento de dependências e JUnit para testes.
+
+## 2. Estrutura do Projeto
+src/
+├── main/java/jogodavida/
+│   ├── Celula.java
+│   └── Tabuleiro.java
+└── test/java/jogodavida/
+    └── TabuleiroTest.java
+
+## 3. Implementação das Classes
+
+### 3.1 Classe Celula
+public class Celula {
+    private boolean viva;
+    
+    public Celula() {
+        this.viva = false;
+    }
+    
+    public boolean isViva() {
+        return viva;
+    }
+    
+    public void setViva(boolean viva) {
+        this.viva = viva;
+    }
+}
+
+- Responsabilidade: Representa uma única célula do tabuleiro
+- Atributos:
+  - viva: boolean que indica o estado da célula
+- Métodos:
+  - Construtor: inicializa a célula como morta
+  - isViva(): retorna o estado atual da célula
+  - setViva(): modifica o estado da célula
+
+### 3.2 Classe Tabuleiro
+public class Tabuleiro {
+    private Celula[][] celulas;
+    private int linhas;
+    private int colunas;
+    
+    // Métodos principais
+    public Tabuleiro(int linhas, int colunas)
+    public void setCelula(int x, int y, boolean estado)
+    public boolean getCelula(int x, int y)
+    public int contaVizinhosVivos(int x, int y)
+    public void proximaGeracao()
+}
+
+- Responsabilidade: Gerencia o tabuleiro e aplica as regras do jogo
+- Atributos:
+  - celulas: matriz de células
+  - linhas: número de linhas do tabuleiro
+  - colunas: número de colunas do tabuleiro
+- Métodos Principais:
+  - Construtor: inicializa o tabuleiro com dimensões especificadas
+  - setCelula(): define o estado de uma célula específica
+  - getCelula(): obtém o estado de uma célula específica
+  - contaVizinhosVivos(): calcula o número de vizinhos vivos
+  - proximaGeracao(): aplica as regras do jogo para gerar a próxima geração
+
+## 4. Regras do Jogo Implementadas
+1. Sobrevivência:
+   - Uma célula viva com 2 ou 3 vizinhos vivos sobrevive
+   - Uma célula viva com menos de 2 vizinhos morre de solidão
+   - Uma célula viva com mais de 3 vizinhos morre de superpopulação
+
+2. Nascimento:
+   - Uma célula morta com exatamente 3 vizinhos vivos nasce
+
+## 5. Testes Implementados
+A classe TabuleiroTest implementa os seguintes casos de teste:
+
+1. Teste de Inicialização
+   - Verifica se o tabuleiro é criado corretamente
+
+2. Teste de Regras de Sobrevivência
+   - Testa células vivas com 2 vizinhos (sobrevivência)
+   - Testa células mortas com 3 vizinhos (nascimento)
+
+3. Teste de Posições Especiais
+   - Verifica o comportamento nas bordas do tabuleiro
+
+4. Teste de Contagem de Vizinhos
+   - Valida a contagem correta de vizinhos vivos
+
+5. Teste de Transições Múltiplas
+   - Verifica a evolução do tabuleiro ao longo de várias gerações
+
+6. Teste de Padrões Conhecidos
+   - Testa o comportamento do padrão "blinker"
+
+## 6. Resultados dos Testes
+Todos os testes foram executados com sucesso, demonstrando que:
+- A inicialização do tabuleiro funciona corretamente
+- As regras do jogo são aplicadas adequadamente
+- O comportamento nas bordas é tratado corretamente
+- A contagem de vizinhos é precisa
+- Os padrões conhecidos do jogo funcionam como esperado
+
+## 7. Conclusão
+A implementação da Parte 1 do Jogo da Vida foi concluída com sucesso, atendendo a todos os requisitos especificados:
+- Estrutura de dados adequada para representar o tabuleiro
+- Implementação correta das regras do jogo
+- Tratamento adequado de casos especiais
+- Testes abrangentes que cobrem os principais cenários
+- Código organizado e bem documentado
+
+A implementação está pronta para ser utilizada como base para as próximas partes do projeto, que podem incluir a interface gráfica e funcionalidades adicionais. 
